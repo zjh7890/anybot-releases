@@ -19,7 +19,7 @@ on:
         required: true
         type: string
 permissions:
-  contents: read
+  contents: write # GitHub 草稿 Release 仅向具有推送权限的调用者开放。
 concurrency:
   group: intel-package-${{ inputs.release_tag }}
   cancel-in-progress: false
@@ -29,6 +29,8 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
       - name: 下载并核对原候选
         env:
           GH_TOKEN: ${{ github.token }}
