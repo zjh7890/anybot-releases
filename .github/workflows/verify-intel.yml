@@ -1,0 +1,52 @@
+name: 验证已签包的原生 Intel 冷启动
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: QA 草稿 Release 标签
+        required: true
+        type: string
+      asset:
+        description: 已签 App 的 ZIP 文件名
+        required: true
+        type: string
+      sha256:
+        description: 本地验签后 ZIP 的准确 SHA256
+        required: true
+        type: string
+      build:
+        description: CFBundleVersion
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: intel-package-${{ inputs.release_tag }}
+  cancel-in-progress: false
+jobs:
+  cold-intel:
+    runs-on: macos-15-intel
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: 下载并核对原候选
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          QA_TAG: ${{ inputs.release_tag }}
+          QA_ASSET: ${{ inputs.asset }}
+          QA_SHA256: ${{ inputs.sha256 }}
+        run: python3 scripts/download-candidate.py
+      - name: 原生 Intel 空数据目录实跑
+        env:
+          QA_BUILD: ${{ inputs.build }}
+        run: python3 scripts/verify-macos-package.py candidate/AnyBot.app --architecture x86_64 --build "$QA_BUILD" --out result.json
+      - name: 保存可回读结果
+        if: always()
+        run: |
+          if test -f result.json; then
+            cat result.json
+            printf '\n```json\n' >> "$GITHUB_STEP_SUMMARY"
+            cat result.json >> "$GITHUB_STEP_SUMMARY"
+            printf '\n```\n' >> "$GITHUB_STEP_SUMMARY"
+          fi
