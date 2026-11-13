@@ -46,7 +46,7 @@ jobs:
       - name: 包内官方 Codex 实调 MCP 工具
         env:
           ELECTRON_RUN_AS_NODE: "1"
-        run: QA_APP="$PWD/candidate/AnyBot.app" candidate/AnyBot.app/Contents/MacOS/Electron --test scripts/verify-native-tools.test.mjs
+        run: python3 scripts/verify-native-tools.py candidate/AnyBot.app
       - name: 保存可回读结果
         if: always()
         run: |
