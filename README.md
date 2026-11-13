@@ -4,7 +4,7 @@
 
 下载 DMG，将 AnyBot 拖入“应用程序”。打开后登录 Google 账号，再在设置中连接 ChatGPT 账号或 API Key。Release 附有最终 DMG 的 SHA256 校验文件。
 
-364 已通过 Developer ID 签名、Apple 公证、App／DMG 附票和 Gatekeeper。原生 ARM（macOS 27.0.1）与 Intel（macOS 15.7.9）的空数据启动、账号／模型接口和正常退出均通过；两种架构均实际运行包内官方 Codex，经 MCP 调用任务、Todo、模型提升及手机历史工具。工具验证使用私有本地模型测试服务。
+364 已通过 Developer ID 签名、Apple 公证、App／DMG 附票和 Gatekeeper。原生 ARM（macOS 27.0.1）与 Intel（macOS 15.7.9）的空数据启动、账号／模型接口和正常退出均通过；两种架构均实际运行包内官方 Codex，经 MCP 调用任务、Todo、模型提升及手机历史工具。工具验证使用私有本地模型测试服务。发布后另用未登录 HTTP 重新下载 DMG 与校验文件，完整字节及 SHA256 一致，附票、签名与 Gatekeeper 复核通过。
 
 本版补齐手机诊断接收，并提供按账号隔离的来源列表、分页查询、详情和导出。Swift 原生存储至客户端传输、Host 镜像与只读工具的集成测试通过；手机 UI、Expo 桥接和真机端到端仍待验。部分旧目录保留历史会退回原生读取，其预览性能仍在后继优化。
 
