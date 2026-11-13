@@ -43,6 +43,10 @@ jobs:
         env:
           QA_BUILD: ${{ inputs.build }}
         run: python3 scripts/verify-macos-package.py candidate/AnyBot.app --architecture x86_64 --build "$QA_BUILD" --out result.json
+      - name: 包内官方 Codex 实调 MCP 工具
+        env:
+          ELECTRON_RUN_AS_NODE: "1"
+        run: QA_APP="$PWD/candidate/AnyBot.app" candidate/AnyBot.app/Contents/MacOS/Electron --test scripts/verify-native-tools.test.mjs
       - name: 保存可回读结果
         if: always()
         run: |
